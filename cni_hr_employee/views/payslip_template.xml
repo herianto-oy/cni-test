@@ -1,0 +1,113 @@
+<odoo>
+  <template id="portal_my_home_menu_payslip" name="Portal layout : employee menu entries" inherit_id="portal.portal_breadcrumbs" priority="1">
+    <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+      <li t-if="page_name == 'payslip'" t-attf-class="breadcrumb-item active">
+        <a t-attf-href="/my/payslip?{{ keep_query() }}">Payslip</a>
+      </li>
+      <li t-if="page_name == 'employee'" t-attf-class="breadcrumb-item">
+        Employee
+      </li>
+    </xpath>
+  </template>
+
+  <template id="portal_my_home_payslip" name="Portal My Home : purchase entry" inherit_id="portal.portal_my_home" priority="1">
+    <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+      <t t-if="payslip_count" t-call="portal.portal_docs_entry">
+        <t t-set="title">Payslip</t>
+        <t t-set="url" t-value="'/my/payslip'"/>
+        <t t-set="count" t-value="payslip_count"/>
+      </t>
+    </xpath>
+  </template>
+
+  <template id="portal_my_payslips" name="Portal: My Employee">
+    <t t-call="portal.portal_layout">
+      <t t-call="portal.portal_searchbar">
+        <t t-set="title">Payslip</t>
+      </t>
+      <t t-call="portal.portal_table">
+        <thead>
+          <tr class="active">
+            <th>Number</th>
+            <th class="text-center">Period</th>
+            <th class="text-center">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <t t-foreach="payslip_ids" t-as="payslip_id">
+            <tr>
+              <td>
+                <span t-field="payslip_id.number"/>
+              </td>
+              <td class="text-center">
+                <span t-field="payslip_id.date_from"/> - <span t-field="payslip_id.date_to"/>
+              </td>
+              <td>
+                <a class="btn btn-secondary btn-block o_download_btn" t-att-href="payslip_id.get_portal_url_new(report_type='pdf', download=True)" title="Download">
+                  Download
+                </a>
+              </td>
+            </tr>
+          </t>
+        </tbody>
+      </t>
+    </t>
+  </template>
+
+  <template id="portal_layout_inherit" inherit_id="portal.portal_layout">
+    <xpath expr="//div[@class='o_portal_my_details']" position="before">
+      <div class="container mt-3">
+        <div class="o_portal_my_details">
+          <h4>Employee <a role="button" href="/my/employee" class="btn btn-sm btn-link">
+            <i class="fa fa-pencil"/>Edit</a>
+          </h4>
+          <t t-call="portal.portal_table" class="border-0">
+            <tbody>
+              <tr>
+                <td>
+                  Name
+                </td>
+                <td>
+                  <span t-field="user_id.employee_id.name"/>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Martial Status
+                </td>
+                <td>
+                  <span t-field="user_id.sudo().employee_id.marital"/>
+                </td>
+              </tr>
+              <tr>
+                <t t-set="emp_address_id" t-value="user_id.sudo().employee_id.address_id"/>
+                <td>Address</td>
+                <td>
+                  <t t-if="emp_address_id.street">
+                    <span t-field="emp_address_id.street"/> <br/>
+                  </t>
+                  <t t-if="emp_address_id.street2">
+                    <span t-field="emp_address_id.street2"/> <br/>
+                  </t>
+                  <t t-if="emp_address_id.city">
+                    <span t-field="emp_address_id.city"/> <br/>
+                  </t>
+                  <t t-if="emp_address_id.state_id">
+                    <span t-field="emp_address_id.state_id"/> <br/>
+                  </t>
+                  <t t-if="emp_address_id.zip">
+                    <span t-field="emp_address_id.zip"/> <br/>
+                  </t>
+                  <t t-if="emp_address_id.country_id">
+                    <span t-field="emp_address_id.country_id"/> <br/>
+                  </t>
+                </td>
+              </tr>
+            </tbody>
+          </t>
+          <hr class="mt-1 mb-0"/>
+        </div>
+      </div>
+    </xpath>
+  </template>
+</odoo>

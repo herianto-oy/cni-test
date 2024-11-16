@@ -1,0 +1,104 @@
+# Ignore macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+.VolumeIcon.icns
+.fseventsd
+
+# macOS Finder preferences
+.DS_Store?
+._.DS_Store
+
+# Ignore Visual Studio Code settings
+.vscode/
+.vscode/*
+.history/
+*.code-workspace
+
+# Other IDEs or Editor settings
+.idea/
+*.sublime-project
+*.sublime-workspace
+*.vscode/
+
+# Ignore temporary system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Ignore Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore Python virtual environment directories
+env/
+venv/
+ENV/
+VENV/
+venv.bak/
+.venv/
+
+# Ignore Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Ignore Python egg and distribution files
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Ignore PyInstaller
+#  Usually these files are written by a python script from a template
+*.manifest
+*.spec
+
+# Ignore coverage reports
+htmlcov/
+.tox/
+.coverage
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Ignore mypy type checker reports
+.mypy_cache/
+
+# Ignore pylint reports
+.pylint.d/
+
+# Ignore pipenv, poetry, and other package managers' files
+Pipfile
+Pipfile.lock
+poetry.lock
+.poetry/
+__pypackages__/
+
+# Ignore IDE and editor backups
+*.swp
+*.swo
+*~
+
+# Ignore logs and temp files
+*.log
+*.tmp
+*.bak
+*.pid
+*.seed
+*.backup
+
+# Ignore macOS temporary files
+.DS_Store
+
+# Ignore sensitive environment variable files
+.env
+.env.*

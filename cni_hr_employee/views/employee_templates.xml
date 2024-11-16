@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="portal_my_employee">
+        <t t-call="portal.portal_layout">
+            <t t-set="additional_title">Contact Details</t>
+            <form action="/my/employee" method="post">
+                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                <div class="row o_portal_details">
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <div class="col-lg-12">
+                              <div t-if="error_message" class="alert alert-danger" role="alert">
+                                  <t t-foreach="error_message" t-as="err"><t t-esc="err"/><br /></t>
+                              </div>
+                            </div>
+                            <div t-attf-class="form-group col-xl-6">
+                                <label class="col-form-label" for="name">Name</label>
+                                <input type="text" name="name" t-attf-class="form-control" t-att-value="employee.name" />
+                            </div>
+                            <div t-attf-class="form-group col-xl-6">
+                                <label class="col-form-label" for="marital">Marital</label>
+                                <select name="marital" t-attf-class="form-control">
+                                    <option value="">Select...</option>
+                                    <t t-foreach="maritals or []" t-as="marital_value">
+                                        <option t-att-value="marital_value[0]" t-att-selected="marital_value[0] == employee.marital">
+                                            <t t-esc="marital_value[1]" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div t-attf-class="form-group col-xl-6">
+                                <label class="col-form-label" for="street">Street</label>
+                                <input type="text" name="street" t-attf-class="form-control" t-att-value="partner.street"/>
+                            </div>
+
+                            <div t-attf-class="form-group col-xl-6">
+                                <label class="col-form-label" for="street">Street 2</label>
+                                <input type="text" name="street2" t-attf-class="form-control" t-att-value="partner.street2"/>
+                            </div>
+                            <div t-attf-class="form-group col-xl-6">
+                                <label class="col-form-label" for="city">City</label>
+                                <input type="text" name="city" t-attf-class="form-control" t-att-value="partner.city" />
+                            </div>
+                            <div t-attf-class="form-group col-xl-6">
+                                <label class="col-form-label label-optional" for="zipcode">Zip / Postal Code</label>
+                                <input type="text" name="zipcode" t-attf-class="form-control" t-att-value="partner.zip" />
+                            </div>
+                            <div t-attf-class="form-group col-xl-6">
+                                <label class="col-form-label" for="country_id">Country</label>
+                                <select name="country_id" t-attf-class="form-control">
+                                    <option value="">Country...</option>
+                                    <t t-foreach="countries or []" t-as="country">
+                                        <option t-att-value="country.id" t-att-selected="country.id == partner.country_id.id">
+                                            <t t-esc="country.name" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                            <div t-attf-class="form-group col-xl-6">
+                                <label class="col-form-label label-optional" for="state_id">State / Province</label>
+                                <select name="state_id" t-attf-class="form-control">
+                                    <option value="">select...</option>
+                                    <t t-foreach="states or []" t-as="state">
+                                        <option t-att-value="state.id" style="display:none;" t-att-data-country_id="state.country_id.id" t-att-selected="state.id == partner.state_id.id">
+                                            <t t-esc="state.name" />
+                                        </option>
+                                    </t>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <button type="submit" class="btn btn-primary float-right mb32 ">
+                                Update
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </t>
+    </template>
+
+    <template id="portal_layout_inherit" inherit_id="portal.portal_layout">
+        <xpath expr="//div[@class='o_portal_my_details']" position="before">
+            <div t-if="user_id.employee_id" class="container mt-3">
+                <div class="o_portal_my_details">
+                <h4>Employee <a role="button" href="/my/employee" class="btn btn-sm btn-link">
+                    <i class="fa fa-pencil"/>Edit</a>
+                </h4>
+                <t t-call="portal.portal_table" class="border-0">
+                    <tbody>
+                    <tr>
+                        <td>
+                        Name
+                        </td>
+                        <td>
+                        <span t-field="user_id.employee_id.name"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                        Martial Status
+                        </td>
+                        <td>
+                        <span t-field="user_id.sudo().employee_id.marital"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <t t-set="emp_address_id" t-value="user_id.sudo().employee_id.address_id"/>
+                        <td>Address</td>
+                        <td>
+                        <t t-if="emp_address_id.street">
+                            <span t-field="emp_address_id.street"/> <br/>
+                        </t>
+                        <t t-if="emp_address_id.street2">
+                            <span t-field="emp_address_id.street2"/> <br/>
+                        </t>
+                        <t t-if="emp_address_id.city">
+                            <span t-field="emp_address_id.city"/> <br/>
+                        </t>
+                        <t t-if="emp_address_id.state_id">
+                            <span t-field="emp_address_id.state_id"/> <br/>
+                        </t>
+                        <t t-if="emp_address_id.zip">
+                            <span t-field="emp_address_id.zip"/> <br/>
+                        </t>
+                        <t t-if="emp_address_id.country_id">
+                            <span t-field="emp_address_id.country_id"/> <br/>
+                        </t>
+                        </td>
+                    </tr>
+                    </tbody>
+                </t>
+                <hr class="mt-1 mb-0"/>
+                </div>
+            </div>
+        </xpath>
+    </template>
+
+</odoo>
