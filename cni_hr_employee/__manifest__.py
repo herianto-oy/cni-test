@@ -11,7 +11,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/views.xml',
-        'views/payslip_template.xml',
+        'views/payslip_templates.xml',
         'views/employee_templates.xml',
     ],
 }
